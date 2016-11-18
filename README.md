@@ -1,24 +1,37 @@
-# App
+# Elixir Telegram Bot Boilerplate
 
-**TODO: Add description**
+> A boilerplate for making bots for telegram using Elixir because of yes
 
-## Installation
+## Getting Started
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+  1. Setup you bot name and telegram bot token at `config/config.ex`
 
-  1. Add `app` to your list of dependencies in `mix.exs`:
-
-    ```elixir
-    def deps do
-      [{:app, "~> 0.1.0"}]
-    end
-    ```
-
-  2. Ensure `app` is started before your application:
+  > You may set up environment-wide configurations at `dev.ex`, `prod.ex`
+  > and `test` at the `config/` folder if you have different bots for different
+  > environments
 
     ```elixir
-    def application do
-      [applications: [:app]]
-    end
+    config :app,
+      bot_name: "bot_user_name"
+
+    config :nadia,
+      token: "abcdefg_12345678910_the_game"
     ```
+
+  2. Setup commands at `lib/app/commands.ex`
+
+  3. Run at your shell
+
+    ```sh
+    λ mix
+    ```
+
+## See also
+
+* [Rekyuu's version](https://github.com/rekyuu/elixir_telegram_bot).
+I've based my bot mostly in his
+
+## License
+
+[MIT](LICENSE.md)
 
