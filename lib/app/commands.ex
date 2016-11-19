@@ -77,8 +77,8 @@ defmodule App.Commands do
 
   # Advanced Stuff
   #
-  # Now that you already know basically how this boilerplate let me introduce
-  # you to a cool feature that happens under the hood.
+  # Now that you already know basically how this boilerplate works let me
+  # introduce you to a cool feature that happens under the hood.
   #
   # If you are used to telegram bot API, you should know that there's more
   # than one path to fetch the current message chat ID so you could answer it.
