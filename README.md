@@ -49,18 +49,18 @@ Most of the methods at Nadia module have it's macro version for you. Take a look
 [App.Commander](lib/app/commander.ex) to understand better.
 
 Another feature that must be mentioned is that these macros can understand context.
-Let's take a look at the `send_message/2` definitions:
+Let's take a look at the `get_chat_id/2` definitions:
 
 ```elixir
-  defmacro send_message(text, options \\ []) do
-    quote bind_quoted: [text: text, options: options] do
+  defmacro get_chat_id do
+    quote do
       case var!(update) do
         %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_message inline_query.from.id, text, options
+          inline_query.from.id
         %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_message callback_query.message.chat.id, text, options
+          callback_query.message.chat.id
         update ->
-          Nadia.send_message update.message.chat.id, text, options
+          update.message.chat.id
       end
     end
   end
@@ -199,6 +199,10 @@ leave_chat
 ```elixir
 # except for inline querys
 unban_chat_member
+```
+
+```elixir
+get_chat_id
 ```
 
 ## See also

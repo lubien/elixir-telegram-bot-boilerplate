@@ -160,155 +160,70 @@ defmodule App.Commander do
 
   defmacro send_audio(audio, options \\ []) do
     quote bind_quoted: [audio: audio, options: options] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_audio inline_query.from.id, audio, options
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_audio callback_query.message.chat.id, audio, options
-        update ->
-          Nadia.send_audio update.message.chat.id, audio, options
-      end
+      Nadia.send_audio get_chat_id, audio, options
     end
   end
 
   defmacro send_chat_action(action) do
     quote bind_quoted: [action: action] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_chat_action inline_query.from.id, action
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_chat_action callback_query.message.chat.id, action
-        update ->
-          Nadia.send_chat_action update.message.chat.id, action
-      end
+      Nadia.send_chat_action get_chat_id, action
     end
   end
 
   defmacro send_contact(phone_number, first_name, options \\ []) do
     quote bind_quoted: [phone_number: phone_number, first_name: first_name,
                         options: options] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_contact inline_query.from.id, phone_number, first_name,
-                             options
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_contact callback_query.message.chat.id, phone_number,
-                             first_name, options
-        update ->
-          Nadia.send_contact update.message.chat.id, phone_number,
-                             first_name, options
-      end
+      Nadia.send_contact get_chat_id, phone_number, first_name, options
     end
   end
 
   defmacro send_document(document, options \\ []) do
     quote bind_quoted: [document: document, options: options] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_document inline_query.from.id, document, options
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_document callback_query.message.chat.id, document, options
-        update ->
-          Nadia.send_document update.message.chat.id, document, options
-      end
+      Nadia.send_document get_chat_id, document, options
     end
   end
 
   defmacro send_location(latitude, longitude, options \\ []) do
     quote bind_quoted: [latitude: latitude, longitude: longitude,
                         options: options] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_location inline_query.from.id, latitude, longitude, options
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_location callback_query.message.chat.id, latitude,
-                              longitude, options
-        update ->
-          Nadia.send_location update.message.chat.id, latitude,
-                              longitude, options
-      end
+      Nadia.send_location get_chat_id, latitude, longitude, options
     end
   end
 
   defmacro send_message(text, options \\ []) do
     quote bind_quoted: [text: text, options: options] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_message inline_query.from.id, text, options
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_message callback_query.message.chat.id, text, options
-        update ->
-          Nadia.send_message update.message.chat.id, text, options
-      end
+      Nadia.send_message get_chat_id, text, options
     end
   end
 
   defmacro send_photo(photo, options \\ []) do
     quote bind_quoted: [photo: photo, options: options] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_photo inline_query.from.id, photo, options
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_photo callback_query.message.chat.id, photo, options
-        update ->
-          Nadia.send_photo update.message.chat.id, photo, options
-      end
+      Nadia.send_photo get_chat_id, photo, options
     end
   end
 
   defmacro send_sticker(sticker, options \\ []) do
     quote bind_quoted: [sticker: sticker, options: options] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_sticker inline_query.from.id, sticker, options
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_sticker callback_query.message.chat.id, sticker, options
-        update ->
-          Nadia.send_sticker update.message.chat.id, sticker, options
-      end
+      Nadia.send_sticker get_chat_id, sticker, options
     end
   end
 
   defmacro send_venue(latitude, longitude, title, address, options \\ []) do
     quote bind_quoted: [latitude: latitude, longitude: longitude,
                         title: title, address: address, options: options] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_venue inline_query.from.id, latitude, longitude, title,
-                           address, options
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_venue callback_query.message.chat.id, latitude, longitude,
-                           title, address, options
-        update ->
-          Nadia.send_venue update.message.chat.id, latitude, longitude,
-                           title, address, options
-      end
+      Nadia.send_venue get_chat_id, latitude, longitude, title, address, options
     end
   end
 
   defmacro send_video(video, options \\ []) do
     quote bind_quoted: [video: video, options: options] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_video inline_query.from.id, video, options
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_video callback_query.message.chat.id, video, options
-        update ->
-          Nadia.send_video update.message.chat.id, video, options
-      end
+      Nadia.send_video get_chat_id, video, options
     end
   end
 
   defmacro send_voice(voice, options \\ []) do
     quote bind_quoted: [voice: voice, options: options] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.send_voice inline_query.from.id, voice, options
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.send_voice callback_query.message.chat.id, voice, options
-        update ->
-          Nadia.send_voice update.message.chat.id, voice, options
-      end
+      Nadia.send_voice get_chat_id, voice, options
     end
   end
 
@@ -316,107 +231,63 @@ defmodule App.Commander do
 
   defmacro forward_message(chat_id) do
     quote bind_quoted: [chat_id: chat_id] do
-      case var!(update) do
-        # Inline querys are not messages
-        # therefore no need to implement this
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.forward_message chat_id, callback_query.message.chat.id,
-                                callback_query.message.message_id
-        update ->
-          Nadia.forward_message chat_id, update.message.chat.id,
-                                update.message.message_id
-      end
+      Nadia.forward_message chat_id, get_chat_id, var!(update).message.message_id
     end
   end
 
   defmacro get_chat do
     quote do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.get_chat inline_query.from.id
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.get_chat callback_query.message.chat.id
-        update ->
-          Nadia.get_chat update.message.chat.id
-      end
+      Nadia.get_chat get_chat_id
     end
   end
 
   defmacro get_chat_administrators do
     quote do
-      case var!(update) do
-        # Inline querys resolves to the user private chat with this bot
-        # therefore no need to implement this
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.get_chat_administrators callback_query.message.chat.id
-        update ->
-          Nadia.get_chat_administrators update.message.chat.id
-      end
+      Nadia.get_chat_administrators get_chat_id
     end
   end
 
   defmacro get_chat_member(user_id) do
     quote bind_quoted: [user_id: user_id] do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          Nadia.get_chat_member inline_query.from.id, user_id
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.get_chat_member callback_query.message.chat.id, user_id
-        update ->
-          Nadia.get_chat_member update.message.chat.id, user_id
-      end
+      Nadia.get_chat_member get_chat_id, user_id
     end
   end
 
   defmacro get_chat_members_count do
     quote do
-      case var!(update) do
-        %{inline_query: inline_query} when not is_nil(inline_query) ->
-          # Always 2 since it resolves to your chat with this bot
-          {:ok, 2}
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.get_chat_members_count callback_query.message.chat.id
-        update ->
-          Nadia.get_chat_members_count update.message.chat.id
-      end
+      Nadia.get_chat_members_count get_chat_id
     end
   end
 
   defmacro kick_chat_member(user_id) do
     quote bind_quoted: [user_id: user_id] do
-      case var!(update) do
-        # Inline querys resolves to the user private chat with this bot
-        # therefore no need to implement this
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.kick_chat_member callback_query.message.chat.id, user_id
-        update ->
-          Nadia.kick_chat_member update.message.chat.id, user_id
-      end
+      Nadia.kick_chat_member get_chat_id, user_id
     end
   end
 
   defmacro leave_chat do
     quote do
-      case var!(update) do
-        # Inline querys resolves to the user private chat with this bot
-        # therefore no need to implement this
-        %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.leave_chat callback_query.message.chat.id
-        update ->
-          Nadia.leave_chat update.message.chat.id
-      end
+      Nadia.leave_chat get_chat_id
     end
   end
 
   defmacro unban_chat_member(user_id) do
     quote bind_quoted: [user_id: user_id] do
+      Nadia.unban_chat_member get_chat_id, user_id
+    end
+  end
+
+  # Helpers
+
+  defmacro get_chat_id do
+    quote do
       case var!(update) do
-        # Inline querys resolves to the user private chat with this bot
-        # therefore no need to implement this
+        %{inline_query: inline_query} when not is_nil(inline_query) ->
+          inline_query.from.id
         %{callback_query: callback_query} when not is_nil(callback_query) ->
-          Nadia.unban_chat_member callback_query.message.chat.id, user_id
+          callback_query.message.chat.id
         update ->
-          Nadia.unban_chat_member update.message.chat.id, user_id
+          update.message.chat.id
       end
     end
   end
