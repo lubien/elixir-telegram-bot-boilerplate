@@ -50,6 +50,8 @@ defmodule App.Commands do
 
   # You can create command interfaces for callback querys using this macro.
   callback_query_command "choose" do
+    Logger.log :info, "Callback Query Command /choose"
+
     case message.callback_query.data do
       "/choose joseph" ->
         answer_callback_query text: "Indeed you have good taste."
@@ -62,6 +64,8 @@ defmodule App.Commands do
   # Be sure to enable inline mode first: https://core.telegram.org/bots/inline
   # Try by typping "@your_bot_name /what-is something"
   inline_query_command "what-is" do
+    Logger.log :info, "Inline Query Command /what-is"
+
     :ok = answer_inline_query [
       %InlineQueryResult.Article{
         id: "1",
@@ -94,11 +98,12 @@ defmodule App.Commands do
   # will know exatcly where to find it's chat ID. Same goes for the other kinds.
 
   inline_query_command "foo" do
+    Logger.log :info, "Inline Query Command /foo"
     # Where do you think the message will go for?
     # If you answered that it goes to the user private chat with this bot,
     # you're right. Since inline querys can't receive nothing other than
     # Nadia.InlineQueryResult models. Telegram bot API could be tricky.
-    send_message "This came from a inline query"
+    send_message "This came from an inline query"
   end
 
   # Fallbacks
