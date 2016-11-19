@@ -124,6 +124,12 @@ defmodule App.Commander do
     generate_message_matcher(function)
   end
 
+  defmacro command(commands, do: function)
+  when is_list(commands) do
+    Enum.map commands, fn command ->
+      generate_command(command, function)
+    end
+  end
   defmacro command(command, do: function) do
     generate_command(command, function)
   end
@@ -132,16 +138,28 @@ defmodule App.Commander do
     generate_inline_query_matcher(function)
   end
 
+  defmacro inline_query_command(commands, do: function)
+  when is_list(commands) do
+    Enum.map commands, fn item ->
+      generate_inline_query_command(item, function)
+    end
+  end
   defmacro inline_query_command(command, do: function) do
     generate_inline_query_command(command, function)
   end
 
-  defmacro callback_query_command(command, do: function) do
-    generate_callback_query_command(command, function)
-  end
-
   defmacro callback_query(do: function) do
     generate_callback_query_matcher(function)
+  end
+
+  defmacro callback_query_command(commands, do: function)
+  when is_list(commands) do
+    Enum.map commands, fn item ->
+      generate_callback_query_command(item, function)
+    end
+  end
+  defmacro callback_query_command(command, do: function) do
+    generate_callback_query_command(command, function)
   end
 
   # Sender Macros

@@ -3,9 +3,9 @@ defmodule App.Commands do
 
   # You can create commands in the format `/command` by
   # using the macro `command "command"`.
-  command "hello" do
+  command ["hello", "hi"] do
     # Logger module injected from App.Commander
-    Logger.log :info, "Command /hello"
+    Logger.log :info, "Command /hello or /hi"
 
     # You can use almost any function from the Nadia core without
     # having to specify the current chat ID as you can see below.
