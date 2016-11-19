@@ -30,20 +30,20 @@
 
 ```elixir
 command "foo" do
-    IO.inspect message
+    IO.inspect update
     send_message "Hello Telegram"
 end
 ```
 
 The `command/2` macro take a string and a block. In this case, it'll try to match
 anything that starts with `/foo`. Once it matches, it'll inject a constant named
-`message` at the scope of the `do` block.
+`update` at the scope of the `do` block.
 
 `send_message/2` is a macro that takes a string and a keyword list of options.
-But, in fact, send message maps to [Nadia.send_message/3](https://hexdocs.pm/nadia/Nadia.html#send_message/3)
+But, in fact, `send_message/2` maps to [Nadia.send_message/3](https://hexdocs.pm/nadia/Nadia.html#send_message/3)
 a function that takes a chat ID as the first parameter.
 
-The `send_message/2` macro automatically understands the local scoped `message`
+The `send_message/2` macro automatically understands the local scoped `update`
 constant and properly injects the chat ID for you so you can focus on sending stuff.
 Most of the methods at Nadia module have it's macro version for you. Take a look at
 [App.Commander](lib/app/commander.ex) to understand better.
@@ -54,20 +54,20 @@ Let's take a look at the `send_message/2` definitions:
 ```elixir
   defmacro send_message(text, options \\ []) do
     quote bind_quoted: [text: text, options: options] do
-      case var!(message) do
+      case var!(update) do
         %{inline_query: inline_query} when not is_nil(inline_query) ->
           Nadia.send_message inline_query.from.id, text, options
         %{callback_query: callback_query} when not is_nil(callback_query) ->
           Nadia.send_message callback_query.message.chat.id, text, options
-        message ->
-          Nadia.send_message var!(message).message.chat.id, text, options
+        update ->
+          Nadia.send_message update.message.chat.id, text, options
       end
     end
   end
 ```
 
 If you ever used telegram bot API you may have experienced issues trying to find
-where is the chat ID for the current message. That's solves it under the hood in
+where is the chat ID for the current update. That's solves it under the hood in
 this boilerplate for you. Read more about it at [App.Commands](lib/app/commands.ex).
 
 ### Matcher macros
@@ -103,7 +103,7 @@ end
 ```
 
 ```elixir
-# fallback for all messages
+# fallback for all updates
 # must be at the end of the file
 message do
 end

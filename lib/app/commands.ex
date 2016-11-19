@@ -52,7 +52,7 @@ defmodule App.Commands do
   callback_query_command "choose" do
     Logger.log :info, "Callback Query Command /choose"
 
-    case message.callback_query.data do
+    case update.callback_query.data do
       "/choose joseph" ->
         answer_callback_query text: "Indeed you have good taste."
       "/choose joseph-of-course" ->
