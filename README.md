@@ -26,6 +26,181 @@
     λ mix
     ```
 
+## Macros
+
+```elixir
+command "foo" do
+    IO.inspect message
+    send_message "Hello Telegram"
+end
+```
+
+The `command/2` macro take a string and a block. In this case, it'll try to match
+anything that starts with `/foo`. Once it matches, it'll inject a constant named
+`message` at the scope of the `do` block.
+
+`send_message/2` is a macro that takes a string and a keyword list of options.
+But, in fact, send message maps to [Nadia.send_message/3](https://hexdocs.pm/nadia/Nadia.html#send_message/3)
+a function that takes a chat ID as the first parameter.
+
+The `send_message/2` macro automatically understands the local scoped `message`
+constant and properly injects the chat ID for you so you can focus on sending stuff.
+Most of the methods at Nadia module have it's macro version for you. Take a look at
+[App.Commander](lib/app/commander.ex) to understand better.
+
+Another feature that must be mentioned is that these macros can understand context.
+Let's take a look at the `send_message/2` definitions:
+
+```elixir
+  defmacro send_message(text, options \\ []) do
+    quote bind_quoted: [text: text, options: options] do
+      case var!(message) do
+        %{inline_query: inline_query} when not is_nil(inline_query) ->
+          Nadia.send_message inline_query.from.id, text, options
+        %{callback_query: callback_query} when not is_nil(callback_query) ->
+          Nadia.send_message callback_query.message.chat.id, text, options
+        message ->
+          Nadia.send_message var!(message).message.chat.id, text, options
+      end
+    end
+  end
+```
+
+If you ever used telegram bot API you may have experienced issues trying to find
+where is the chat ID for the current message. That's solves it under the hood in
+this boilerplate for you. Read more about it at [App.Commands](lib/app/commands.ex).
+
+### Matcher macros
+
+```elixir
+# matches "/foo" commands
+command "foo" do
+end
+```
+
+```elixir
+# matches "/foo" commands from callback querys
+callback_query_command "foo" do
+end
+```
+
+```elixir
+# matches "/foo" commands from inline querys
+inline_query_command "foo" do
+end
+```
+
+```elixir
+# fallback for callback querys
+callback_query do
+end
+```
+
+```elixir
+# fallback for inline querys
+inline_query do
+end
+```
+
+```elixir
+# fallback for all messages
+# must be at the end of the file
+message do
+end
+```
+### Sender macros
+
+```elixir
+answer_callback_query(options \\ [])
+```
+
+```elixir
+answer_inline_query(results, options \\ [])
+```
+
+```elixir
+send_audio(audio, options \\ [])
+```
+
+```elixir
+send_chat_action(action)
+```
+
+```elixir
+send_contact(phone_number, first_name, options \\ [])
+```
+
+```elixir
+send_document(document, options \\ [])
+```
+
+```elixir
+send_location(latitude, longitude, options \\ [])
+```
+
+```elixir
+send_message(text, options \\ [])
+```
+
+```elixir
+send_photo(photo, options \\ [])
+```
+
+```elixir
+send_sticker(sticker, options \\ [])
+```
+
+```elixir
+send_venue(latitude, longitude, title, address, options \\ [])
+```
+
+```elixir
+send_videos(video, options \\ [])
+```
+
+```elixir
+send_voice(voice, options \\ [])
+```
+
+### Action macros
+
+```elixir
+# except for inline querys
+forward_message(chat_id)
+```
+
+```elixir
+get_chat
+```
+
+```elixir
+# except for inline querys
+get_chat_admnistrators
+```
+
+```elixir
+get_chat_member(user_id)
+```
+
+```elixir
+get_chat_member_count
+```
+
+```elixir
+# except for inline querys
+kick_chat_member(user_id)
+```
+
+```elixir
+# except for inline querys
+leave_chat
+```
+
+```elixir
+# except for inline querys
+unban_chat_member
+```
+
 ## See also
 
 * [Rekyuu's version](https://github.com/rekyuu/elixir_telegram_bot).
@@ -34,4 +209,3 @@ I've based my bot mostly in his
 ## License
 
 [MIT](LICENSE.md)
-
