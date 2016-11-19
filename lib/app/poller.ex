@@ -45,6 +45,11 @@ defmodule App.Poller do
     end)
     |> List.last
   end
+  defp process_messages({:error, %Nadia.Model.Error{reason: reason}}) do
+    Logger.log :error, reason
+
+    -1
+  end
   defp process_messages({:error, error}) do
     Logger.log :error, error
 
