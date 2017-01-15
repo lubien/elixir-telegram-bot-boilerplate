@@ -1,5 +1,8 @@
 defmodule App.Commands do
+  use App.Router
   use App.Commander
+
+  alias App.Commands.Outside
 
   # You can create commands in the format `/command` by
   # using the macro `command "command"`.
@@ -17,6 +20,11 @@ defmodule App.Commands do
     # See also: https://hexdocs.pm/nadia/Nadia.html
     send_message "Hello World!"
   end
+
+  # You may split code to other modules using the syntax
+  # "Module, :function" instead od "do..end"
+  command "outside", Outside, :outside
+  # For the sake of this tutorial, I'll define everything here
 
   command "question" do
     Logger.log :info, "Command /question"
