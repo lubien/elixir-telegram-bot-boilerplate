@@ -214,21 +214,20 @@ defmodule App.Router do
 
   def handle_message({module, function}, update)
   when is_atom(function) and is_list(update) do
-    Task.async fn ->
+    Task.start fn ->
       apply module, function, [hd update]
-      nil
     end
   end
   def handle_message({module, function}, update)
   when is_atom(function) do
-    Task.async fn ->
+    Task.start fn ->
       apply module, function, [update]
     end
   end
 
   def handle_message(function, update)
   when is_function(function) do
-    Task.async fn ->
+    Task.start fn ->
       function
     end
   end
