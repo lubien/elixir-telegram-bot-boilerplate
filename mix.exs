@@ -8,8 +8,8 @@ defmodule App.Mixfile do
      default_task: "server",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps,
-     aliases: aliases]
+     deps: deps(),
+     aliases: aliases()]
   end
 
   def application do

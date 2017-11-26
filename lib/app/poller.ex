@@ -10,7 +10,7 @@ defmodule App.Poller do
   end
 
   def init(:ok) do
-    update
+    update()
     {:ok, 0}
   end
 
@@ -22,7 +22,7 @@ defmodule App.Poller do
   end
 
   def handle_info(:timeout, offset) do
-    update
+    update()
     {:noreply, offset}
   end
 
