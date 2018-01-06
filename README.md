@@ -10,21 +10,22 @@
   > and `test` at the `config/` folder if you have different bots for different
   > environments
 
-    ```elixir
-    config :app,
-      bot_name: "bot_user_name"
 
-    config :nadia,
-      token: "abcdefg_12345678910_the_game"
-    ```
+```elixir
+config :app,
+  bot_name: "bot_user_name"
+
+config :nadia,
+  token: "abcdefg_12345678910_the_game"
+ ```
 
   2. Setup commands at `lib/app/commands.ex`
 
   3. Run at your shell
 
-    ```sh
-    λ mix
-    ```
+```sh
+λ mix
+```
 
 ## Macros
 
