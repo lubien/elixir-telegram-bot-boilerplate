@@ -158,6 +158,8 @@ defmodule App.Commander do
           id
         %{edited_message: %{chat: %{id: id}}} when not is_nil(id) -> 
           id
+        %{channel_post: %{chat: %{id: id}}} when not is_nil(id) ->
+          id
         _ -> raise "No chat id found!"
       end
     end
