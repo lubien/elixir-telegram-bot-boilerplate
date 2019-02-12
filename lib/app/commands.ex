@@ -22,7 +22,7 @@ defmodule App.Commands do
   end
 
   # You may split code to other modules using the syntax
-  # "Module, :function" instead od "do..end"
+  # "Module, :function" instead of "do..end"
   command "outside", Outside, :outside
   # For the sake of this tutorial, I'll define everything here
 
