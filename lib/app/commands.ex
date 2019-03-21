@@ -87,6 +87,13 @@ defmodule App.Commands do
     ]
   end
 
+  # You can emulate arguments acess through nadia's update.message
+  command "argued" do
+    Logger.log :info, "Command /argued"
+     [_command | args] = String.split(update.message.text, " ") 
+    send_message ("Your arguments  were: " <> Enum.join(args, " "))
+  end
+
   # Advanced Stuff
   #
   # Now that you already know basically how this boilerplate works let me
