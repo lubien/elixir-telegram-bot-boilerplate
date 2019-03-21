@@ -90,6 +90,7 @@ defmodule App.Commands do
   # You can emulate argument access through nadia's update.message
   command "argued" do
     Logger.log :info, "Command /argued"
+    
     [_command | args] = String.split(update.message.text, " ") 
     send_message ("Your arguments were: " <> Enum.join(args, " "))
   end
