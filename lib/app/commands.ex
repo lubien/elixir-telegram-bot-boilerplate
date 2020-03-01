@@ -8,7 +8,7 @@ defmodule App.Commands do
   # using the macro `command "command"`.
   command ["hello", "hi"] do
     # Logger module injected from App.Commander
-    Logger.log :info, "Command /hello or /hi"
+    Logger.log(:info, "Command /hello or /hi")
 
     # You can use almost any function from the Nadia core without
     # having to specify the current chat ID as you can see below.
@@ -18,53 +18,56 @@ defmodule App.Commands do
     # injected the proper ID at the function. Go take a look.
     #
     # See also: https://hexdocs.pm/nadia/Nadia.html
-    send_message "Hello World!"
+    send_message("Hello World!")
   end
 
   # You may split code to other modules using the syntax
   # "Module, :function" instead of "do..end"
-  command "outside", Outside, :outside
+  command("outside", Outside, :outside)
   # For the sake of this tutorial, I'll define everything here
 
   command "question" do
-    Logger.log :info, "Command /question"
+    Logger.log(:info, "Command /question")
 
-    {:ok, _} = send_message "What's the best JoJo?",
-      # Nadia.Model is aliased from App.Commander
-      #
-      # See also: https://hexdocs.pm/nadia/Nadia.Model.InlineKeyboardMarkup.html
-      reply_markup: %Model.InlineKeyboardMarkup{
-        inline_keyboard: [
-          [
-            %{
-              callback_data: "/choose joseph",
-              text: "Joseph Joestar",
-            },
-            %{
-              callback_data: "/choose joseph-of-course",
-              text: "Joseph Joestar of course",
-            },
-          ],
-          [
-            # Read about fallbacks in the end of the file
-            %{
-              callback_data: "/typo-:p",
-              text: "Other",
-            },
+    {:ok, _} =
+      send_message("What's the best JoJo?",
+        # Nadia.Model is aliased from App.Commander
+        #
+        # See also: https://hexdocs.pm/nadia/Nadia.Model.InlineKeyboardMarkup.html
+        reply_markup: %Model.InlineKeyboardMarkup{
+          inline_keyboard: [
+            [
+              %{
+                callback_data: "/choose joseph",
+                text: "Joseph Joestar"
+              },
+              %{
+                callback_data: "/choose joseph-of-course",
+                text: "Joseph Joestar of course"
+              }
+            ],
+            [
+              # Read about fallbacks in the end of the file
+              %{
+                callback_data: "/typo-:p",
+                text: "Other"
+              }
+            ]
           ]
-        ]
-      }
+        }
+      )
   end
 
   # You can create command interfaces for callback querys using this macro.
   callback_query_command "choose" do
-    Logger.log :info, "Callback Query Command /choose"
+    Logger.log(:info, "Callback Query Command /choose")
 
     case update.callback_query.data do
       "/choose joseph" ->
-        answer_callback_query text: "Indeed you have good taste."
+        answer_callback_query(text: "Indeed you have good taste.")
+
       "/choose joseph-of-course" ->
-        answer_callback_query text: "I can't agree more."
+        answer_callback_query(text: "I can't agree more.")
     end
   end
 
@@ -72,27 +75,28 @@ defmodule App.Commands do
   # Be sure to enable inline mode first: https://core.telegram.org/bots/inline
   # Try by typping "@your_bot_name /what-is something"
   inline_query_command "what-is" do
-    Logger.log :info, "Inline Query Command /what-is"
+    Logger.log(:info, "Inline Query Command /what-is")
 
-    :ok = answer_inline_query [
-      %InlineQueryResult.Article{
-        id: "1",
-        title: "10 Hours What is Love Jim Carrey HD",
-        thumb_url: "https://img.youtube.com/vi/ER97mPHhgtM/3.jpg",
-        description: "Have a great time",
-        input_message_content: %{
-          message_text: "https://www.youtube.com/watch?v=ER97mPHhgtM",
+    :ok =
+      answer_inline_query([
+        %InlineQueryResult.Article{
+          id: "1",
+          title: "10 Hours What is Love Jim Carrey HD",
+          thumb_url: "https://img.youtube.com/vi/ER97mPHhgtM/3.jpg",
+          description: "Have a great time",
+          input_message_content: %{
+            message_text: "https://www.youtube.com/watch?v=ER97mPHhgtM"
+          }
         }
-      }
-    ]
+      ])
   end
 
   # You can emulate argument access through nadia's update.message
   command "argued" do
-    Logger.log :info, "Command /argued"
-    
-    [_command | args] = String.split(update.message.text, " ") 
-    send_message ("Your arguments were: " <> Enum.join(args, " "))
+    Logger.log(:info, "Command /argued")
+
+    [_command | args] = String.split(update.message.text, " ")
+    send_message("Your arguments were: " <> Enum.join(args, " "))
   end
 
   # Advanced Stuff
@@ -114,45 +118,46 @@ defmodule App.Commands do
   # will know exatcly where to find it's chat ID. Same goes for the other kinds.
 
   inline_query_command "foo" do
-    Logger.log :info, "Inline Query Command /foo"
+    Logger.log(:info, "Inline Query Command /foo")
     # Where do you think the message will go for?
     # If you answered that it goes to the user private chat with this bot,
     # you're right. Since inline querys can't receive nothing other than
     # Nadia.InlineQueryResult models. Telegram bot API could be tricky.
-    send_message "This came from an inline query"
+    send_message("This came from an inline query")
   end
 
   # Fallbacks
 
   # Rescues any unmatched callback query.
   callback_query do
-    Logger.log :warn, "Did not match any callback query"
+    Logger.log(:warn, "Did not match any callback query")
 
-    answer_callback_query text: "Sorry, but there is no JoJo better than Joseph."
+    answer_callback_query(text: "Sorry, but there is no JoJo better than Joseph.")
   end
 
   # Rescues any unmatched inline query.
   inline_query do
-    Logger.log :warn, "Did not match any inline query"
+    Logger.log(:warn, "Did not match any inline query")
 
-    :ok = answer_inline_query [
-      %InlineQueryResult.Article{
-        id: "1",
-        title: "Darude-Sandstorm Non non Biyori Renge Miyauchi Cover 1 Hour",
-        thumb_url: "https://img.youtube.com/vi/yZi89iQ11eM/3.jpg",
-        description: "Did you mean Darude Sandstorm?",
-        input_message_content: %{
-          message_text: "https://www.youtube.com/watch?v=yZi89iQ11eM",
+    :ok =
+      answer_inline_query([
+        %InlineQueryResult.Article{
+          id: "1",
+          title: "Darude-Sandstorm Non non Biyori Renge Miyauchi Cover 1 Hour",
+          thumb_url: "https://img.youtube.com/vi/yZi89iQ11eM/3.jpg",
+          description: "Did you mean Darude Sandstorm?",
+          input_message_content: %{
+            message_text: "https://www.youtube.com/watch?v=yZi89iQ11eM"
+          }
         }
-      }
-    ]
+      ])
   end
 
   # The `message` macro must come at the end since it matches anything.
   # You may use it as a fallback.
   message do
-    Logger.log :warn, "Did not match the message"
+    Logger.log(:warn, "Did not match the message")
 
-    send_message "Sorry, I couldn't understand you"
+    send_message("Sorry, I couldn't understand you")
   end
 end

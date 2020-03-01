@@ -5,7 +5,7 @@ defmodule App.Matcher do
   # Server
 
   def start_link do
-    GenServer.start_link __MODULE__, :ok, name: __MODULE__
+    GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
   def init(:ok) do
@@ -13,7 +13,7 @@ defmodule App.Matcher do
   end
 
   def handle_cast(message, state) do
-    Commands.match_message message
+    Commands.match_message(message)
 
     {:noreply, state}
   end
@@ -21,6 +21,6 @@ defmodule App.Matcher do
   # Client
 
   def match(message) do
-    GenServer.cast __MODULE__, message
+    GenServer.cast(__MODULE__, message)
   end
 end
