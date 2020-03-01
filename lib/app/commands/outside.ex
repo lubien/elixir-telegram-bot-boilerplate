@@ -9,8 +9,8 @@ defmodule App.Commands.Outside do
   # update. Otherwise, macros (like `send_message`) will not
   # work as expected.
   def outside(update) do
-    Logger.log :info, "Command /outside"
+    Logger.log(:info, "Command /outside")
 
-    send_message "This came from a separate module."
+    send_message("This came from a separate module.")
   end
 end
