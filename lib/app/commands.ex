@@ -58,7 +58,7 @@ defmodule App.Commands do
       )
   end
 
-  # You can create command interfaces for callback querys using this macro.
+  # You can create command interfaces for callback queries using this macro.
   callback_query_command "choose" do
     Logger.log(:info, "Callback Query Command /choose")
 
