@@ -18,11 +18,19 @@ defmodule App do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker(App.Poller, []),
-      worker(App.Matcher, [])
+      %{
+        id: App.Poller,
+        start: {App.Poller, :start_link, []}
+      },
+      %{
+        id: App.Matcher,
+        start: {App.Matcher, :start_link, []}
+      },
     ]
 
     opts = [strategy: :one_for_one, name: App.Supervisor]
     Supervisor.start_link(children, opts)
   end
+
+  def get_bot_name, do: Application.get_env(:app, :bot_name)
 end

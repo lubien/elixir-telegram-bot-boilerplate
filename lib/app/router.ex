@@ -1,8 +1,4 @@
 defmodule App.Router do
-  @bot_name Application.get_env(:app, :bot_name)
-
-  # Code injectors
-
   defmacro __using__(_opts) do
     quote do
       require Logger
@@ -55,7 +51,7 @@ defmodule App.Router do
       def do_match_message(
             %{
               message: %{
-                text: "/" <> unquote(command) <> "@" <> unquote(@bot_name)
+                text: "/" <> unquote(command) <> "@" <> unquote(App.get_bot_name())
               }
             } = var!(update)
           ) do
@@ -65,7 +61,7 @@ defmodule App.Router do
       def do_match_message(
             %{
               message: %{
-                text: "/" <> unquote(command) <> "@" <> unquote(@bot_name) <> " " <> _
+                text: "/" <> unquote(command) <> "@" <> unquote(App.get_bot_name()) <> " " <> _
               }
             } = var!(update)
           ) do
@@ -248,7 +244,7 @@ defmodule App.Router do
     end)
   end
 
-  def handle_message(function, update)
+  def handle_message(function, _update)
       when is_function(function) do
     Task.start(fn ->
       function.()
